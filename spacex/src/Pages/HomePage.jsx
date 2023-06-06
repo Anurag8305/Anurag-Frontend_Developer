@@ -20,23 +20,10 @@ import { BiHistory } from "react-icons/bi";
 import DataModal from "../Components/DataModal";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { SimpleGrid } from '@chakra-ui/react'
+import CapusuleData from "../Components/CapusuleData";
 
 const Card = ({ heading, description, icon, href }) => {
-	const [data, setData] = useState([]);
-	const getData = () => {
-		axios
-			.get(`https://api.spacexdata.com/v3/capsules`)
-			.then((res) => {
-        console.log(res);
-        setData(res.data)
-      })
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-	useEffect(() => {
-		getData();
-	}, []);
 	const handleModal = (description) => {
 		<DataModal description={description} />;
 	};
@@ -84,6 +71,21 @@ const Card = ({ heading, description, icon, href }) => {
 };
 
 export default function HomePage() {
+	const [data, setData] = useState([]);
+	const getData = () => {
+		axios
+			.get(`https://api.spacexdata.com/v3/capsules`)
+			.then((res) => {
+				console.log(res);
+				setData(res.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+	useEffect(() => {
+		getData();
+	}, []);
 	return (
 		<>
 			<Box
@@ -94,7 +96,7 @@ export default function HomePage() {
 				backgroundRepeat={"no-repeat"}
 				backgroundSize={"100%"}
 			>
-				<Stack spacing={4} as={Container} maxW={"3xl"} textAlign={"center"}>
+				<Stack spacing={4} as={Container} textAlign={"center"}>
 					<Heading fontSize={{ base: "2xl", sm: "4xl" }} fontWeight={"bold"}>
 						RECENT LAUNCH - CRS-28 MISSION
 					</Heading>
@@ -142,21 +144,36 @@ export default function HomePage() {
 					</Flex>
 				</Container>
 			</Box>
-			<Box p={4} backgroundImage={
-					"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiKlEcEn5iC09MD12dxovC2b6mvcUSrUSpBg&usqp=CAU"
+			<Box
+				p={4}
+				backgroundImage={
+					"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsHNzO85ZAVV4my29piTw6orCLFmVisAbvBw&usqp=CAU"
 				}
 				backgroundRepeat={"no-repeat"}
-				backgroundSize={"100%"}>
-				<Stack
-					spacing={4}
-					as={Container}
-					maxW={"3xl"}
-					textAlign={"center"}
-				>
-          <Heading fontSize={{ base: "2xl", sm: "4xl" }} fontWeight={"bold"}>
+				backgroundSize={"100%"}
+			>
+				<Stack spacing={4} as={Container} maxW={"7xl"} textAlign={"center"}>
+					<Heading fontSize={{ base: "2xl", sm: "4xl" }} fontWeight={"bold"}>
 						Capsules Data
 					</Heading>
-        </Stack>
+					<SimpleGrid columns={4} spacing={10}>
+							{data.map((el) => {
+								return (
+									<CapusuleData
+										id={el.capsule_id}
+										serial={el.capsule_serial}
+										details={el.details}
+                    landings={el.landings}
+                    launch={el.original_launch}
+                    unix={el.original_launch_unix}
+                    count={el.reuse_count}
+                    status={el.status}
+                    type={el.type}
+									/>
+								);
+							})}
+					</SimpleGrid>
+				</Stack>
 			</Box>
 		</>
 	);

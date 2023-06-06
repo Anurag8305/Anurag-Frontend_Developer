@@ -1,52 +1,150 @@
 import {
-	Card,
-	CardHeader,
-	CardBody,
-	Heading,
-	Stack,
-	StackDivider,
+	Accordion,
+	AccordionItem,
+	AccordionButton,
+	AccordionPanel,
+	AccordionIcon,
 	Box,
-	Text,
+    Text,
+    useColorModeValue,
+    Center,
 } from "@chakra-ui/react";
 
 import React from "react";
 
-const CapusuleData = () => {
+const CapusuleData = ({
+	id,
+	serial,
+	details,
+	landings,
+	launch,
+	unix,
+	count,
+	status,
+	type,
+}) => {
 	return (
-		<Card>
-			<CardHeader>
-				<Heading size="md">Client Report</Heading>
-			</CardHeader>
+        <Center py={6}>
+        <Box
+        maxW={'470px'}
+        w={'full'}
+        bg={useColorModeValue('white', 'gray.800')}
+        boxShadow={'2xl'}
+        rounded={'md'}
+        overflow={'hidden'}>
+            <Accordion allowMultiple
+        >
+			<Text color={"white"}>Capusle Information</Text>
+			<AccordionItem>
+				<h2>
+					<AccordionButton>
+						<Box as="span" flex="1" textAlign="left">
+							Capsule-id
+						</Box>
+						<AccordionIcon />
+					</AccordionButton>
+				</h2>
+				<AccordionPanel pb={4}>{id}</AccordionPanel>
+			</AccordionItem>
 
-			<CardBody>
-				<Stack divider={<StackDivider />} spacing="4">
-					<Box>
-						<Heading size="xs" textTransform="uppercase">
-							Summary
-						</Heading>
-						<Text pt="2" fontSize="sm">
-							View a summary of all your clients over the last month.
-						</Text>
-					</Box>
-					<Box>
-						<Heading size="xs" textTransform="uppercase">
-							Overview
-						</Heading>
-						<Text pt="2" fontSize="sm">
-							Check out the overview of your clients.
-						</Text>
-					</Box>
-					<Box>
-						<Heading size="xs" textTransform="uppercase">
-							Analysis
-						</Heading>
-						<Text pt="2" fontSize="sm">
-							See a detailed analysis of all your business clients.
-						</Text>
-					</Box>
-				</Stack>
-			</CardBody>
-		</Card>
+			<AccordionItem>
+				<h2>
+					<AccordionButton>
+						<Box as="span" flex="1" textAlign="left">
+							Capsule_Serial
+						</Box>
+						<AccordionIcon />
+					</AccordionButton>
+				</h2>
+				<AccordionPanel pb={4}>{serial}</AccordionPanel>
+			</AccordionItem>
+
+			<AccordionItem>
+				<h2>
+					<AccordionButton>
+						<Box as="span" flex="1" textAlign="left">
+							Details
+						</Box>
+						<AccordionIcon />
+					</AccordionButton>
+				</h2>
+				<AccordionPanel pb={4}>{details}</AccordionPanel>
+			</AccordionItem>
+
+			<AccordionItem>
+				<h2>
+					<AccordionButton>
+						<Box as="span" flex="1" textAlign="left">
+							Landings
+						</Box>
+						<AccordionIcon />
+					</AccordionButton>
+				</h2>
+				<AccordionPanel pb={4}>{landings}</AccordionPanel>
+			</AccordionItem>
+
+			<AccordionItem>
+				<h2>
+					<AccordionButton>
+						<Box as="span" flex="1" textAlign="left">
+							Original Launch
+						</Box>
+						<AccordionIcon />
+					</AccordionButton>
+				</h2>
+				<AccordionPanel pb={4}>{launch}</AccordionPanel>
+			</AccordionItem>
+
+			<AccordionItem>
+				<h2>
+					<AccordionButton>
+						<Box as="span" flex="1" textAlign="left">
+							Original Launch Unix
+						</Box>
+						<AccordionIcon />
+					</AccordionButton>
+				</h2>
+				<AccordionPanel pb={4}>{unix}</AccordionPanel>
+			</AccordionItem>
+
+			<AccordionItem>
+				<h2>
+					<AccordionButton>
+						<Box as="span" flex="1" textAlign="left">
+							Rreuse Count
+						</Box>
+						<AccordionIcon />
+					</AccordionButton>
+				</h2>
+				<AccordionPanel pb={4}>{count}</AccordionPanel>
+			</AccordionItem>
+
+			<AccordionItem>
+				<h2>
+					<AccordionButton>
+						<Box as="span" flex="1" textAlign="left">
+							Status
+						</Box>
+						<AccordionIcon />
+					</AccordionButton>
+				</h2>
+				<AccordionPanel pb={4}>{status}</AccordionPanel>
+			</AccordionItem>
+			<AccordionItem>
+				<h2>
+					<AccordionButton>
+						<Box as="span" flex="1" textAlign="left">
+							Type
+						</Box>
+						<AccordionIcon />
+					</AccordionButton>
+				</h2>
+				<AccordionPanel pb={4}>{type}</AccordionPanel>
+			</AccordionItem>
+		</Accordion>
+        </Box>
+        </Center>
+		
 	);
 };
 
