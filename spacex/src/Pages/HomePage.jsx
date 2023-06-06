@@ -20,7 +20,6 @@ import { BiHistory } from "react-icons/bi";
 import DataModal from "../Components/DataModal";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { SimpleGrid } from '@chakra-ui/react'
 import CapusuleData from "../Components/CapusuleData";
 
 const Card = ({ heading, description, icon, href }) => {
@@ -72,9 +71,29 @@ const Card = ({ heading, description, icon, href }) => {
 
 export default function HomePage() {
 	const [data, setData] = useState([]);
-	const getData = () => {
+	const [page, setPage] = useState([]);
+	const getData = (page, limit) => {
 		axios
-			.get(`https://api.spacexdata.com/v3/capsules`)
+			.get(`https://api.spacexdata.com/v3/capsules/?page={page}&limit=${limit}`)
+			.then((res) => {
+				console.log(res);
+				setData(res.data);
+				createButton(data.length, 5);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+	const createButton = (length, limit) => {
+		let count=Math.ceil(length / limit);
+    for(let i=0;i<count;i++){
+      setPage(...page,i+1)
+    }
+    console.log(page);
+	};
+	const PaginatedData = (clicked_btn, limit) => {
+		axios
+			.get(`https://api.spacexdata.com/v3/capsules/?page={page}&limit=${limit}`)
 			.then((res) => {
 				console.log(res);
 				setData(res.data);
@@ -84,7 +103,7 @@ export default function HomePage() {
 			});
 	};
 	useEffect(() => {
-		getData();
+		getData(1, 5);
 	}, []);
 	return (
 		<>
@@ -144,35 +163,30 @@ export default function HomePage() {
 					</Flex>
 				</Container>
 			</Box>
-			<Box
-				p={4}
-				backgroundImage={
-					"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsHNzO85ZAVV4my29piTw6orCLFmVisAbvBw&usqp=CAU"
-				}
-				backgroundRepeat={"no-repeat"}
-				backgroundSize={"100%"}
-			>
+			<Box p={4} backgroundColor={"skyblue"}>
 				<Stack spacing={4} as={Container} maxW={"7xl"} textAlign={"center"}>
 					<Heading fontSize={{ base: "2xl", sm: "4xl" }} fontWeight={"bold"}>
 						Capsules Data
 					</Heading>
-					<SimpleGrid columns={4} spacing={10}>
+					<Container maxW={"8xl"} mt={12}>
+						<Flex flexWrap="wrap" gridGap={6} justify="center">
 							{data.map((el) => {
 								return (
 									<CapusuleData
 										id={el.capsule_id}
 										serial={el.capsule_serial}
 										details={el.details}
-                    landings={el.landings}
-                    launch={el.original_launch}
-                    unix={el.original_launch_unix}
-                    count={el.reuse_count}
-                    status={el.status}
-                    type={el.type}
+										landings={el.landings}
+										launch={el.original_launch}
+										unix={el.original_launch_unix}
+										count={el.reuse_count}
+										status={el.status}
+										type={el.type}
 									/>
 								);
 							})}
-					</SimpleGrid>
+						</Flex>
+					</Container>
 				</Stack>
 			</Box>
 		</>
