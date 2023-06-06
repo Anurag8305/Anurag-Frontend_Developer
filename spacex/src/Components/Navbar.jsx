@@ -45,6 +45,10 @@ export default function Navbar() {
 	const handleHome = () => {
 		navigate("/");
 	};
+	const handleLogout = () => {
+		localStorage.clear();
+		navigate("/");
+	};
 	return (
 		<>
 			<Box bg={useColorModeValue("gray.100", "gray.900")} px={10}>
@@ -56,14 +60,26 @@ export default function Navbar() {
 							<Button onClick={toggleColorMode}>
 								{colorMode === "light" ? <MoonIcon /> : <SunIcon />}
 							</Button>
-							<Button
-								onClick={handlenavigate}
-								backgroundColor={"#0672cb"}
-								width={"100%"}
-								color={"white"}
-							>
-								{token ? "Logout" : "Login"}
-							</Button>
+							{token ? (
+								<Button
+									onClick={handlenavigate}
+									backgroundColor={"#0672cb"}
+									width={"100%"}
+									isDisabled
+									color={"white"}
+								>
+									Login
+								</Button>
+							) : (
+								<Button
+									onClick={handlenavigate}
+									backgroundColor={"#0672cb"}
+									width={"100%"}
+									color={"white"}
+								>
+									Login
+								</Button>
+							)}
 							<Menu>
 								<MenuButton
 									as={Button}
@@ -93,7 +109,7 @@ export default function Navbar() {
 									<MenuDivider />
 									<MenuItem>Your Servers</MenuItem>
 									<MenuItem>Account Settings</MenuItem>
-									<MenuItem>Logout</MenuItem>
+									<MenuItem onClick={handleLogout}>Logout</MenuItem>
 								</MenuList>
 							</Menu>
 						</Stack>
