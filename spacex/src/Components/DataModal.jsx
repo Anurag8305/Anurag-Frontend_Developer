@@ -10,16 +10,9 @@ import {
 	Button,
 	Text,
 } from "@chakra-ui/react";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function DataModal({ description }) {
-	const getData = (description) => {
-		axios
-			.get(`description`)
-			.then((res) => console.log(res).catch((err) => console.log(err)));
-	};
-	getData();
+export default function DataModal() {
 	const OverlayOne = () => (
 		<ModalOverlay
 			bg="blackAlpha.300"
@@ -43,10 +36,17 @@ export default function DataModal({ description }) {
 			<Modal isCentered isOpen={isOpen} onClose={onClose}>
 				{overlay}
 				<ModalContent>
-					<ModalHeader>Modal Title</ModalHeader>
+					<ModalHeader>SpaceX</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
-						<Text>Custom backdrop filters!</Text>
+						<Text>
+							“You want to wake up in the morning and think the future is going
+							to be great - and that’s what being a spacefaring civilization is
+							all about. It’s about believing in the future and thinking that
+							the future will be better than the past. And I can’t think of
+							anything more exciting than going out there and being among the
+							stars.” -Elon Musk
+						</Text>
 					</ModalBody>
 					<ModalFooter>
 						<Button onClick={onClose}>Close</Button>
