@@ -9,6 +9,7 @@ import {
 	Text,
 	useColorModeValue,
 } from "@chakra-ui/react";
+import { Select } from "@chakra-ui/react";
 
 import {
 	GiApolloCapsule,
@@ -76,7 +77,6 @@ export default function HomePage() {
 		axios
 			.get(`https://api.spacexdata.com/v3/capsules/?page={page}&limit=${limit}`)
 			.then((res) => {
-				console.log(res);
 				setData(res.data);
 				createButton(data.length, 5);
 			})
@@ -85,23 +85,45 @@ export default function HomePage() {
 			});
 	};
 	const createButton = (length, limit) => {
-		let count=Math.ceil(length / limit);
-    for(let i=0;i<count;i++){
-      setPage(...page,i+1)
-    }
-    console.log(page);
+		let count = Math.ceil(length / limit);
+		for (let i = 0; i < count; i++) {
+			setPage(...page, i + 1);
+		}
+		console.log(page);
 	};
 	const PaginatedData = (clicked_btn, limit) => {
 		axios
 			.get(`https://api.spacexdata.com/v3/capsules/?page={page}&limit=${limit}`)
 			.then((res) => {
-				console.log(res);
 				setData(res.data);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	};
+  const handleStatus=(e)=>{
+    axios
+    .get(`https://api.spacexdata.com/v3/capsules/?status=${e}`)
+    .then((res) => {
+      console.log(res);
+      setData(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+  const handleType=(e)=>{
+    console.log(e);
+    axios
+    .get(`https://api.spacexdata.com/v3/capsules/?type=${e}`)
+    .then((res) => {
+      console.log(res);
+      setData(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
 	useEffect(() => {
 		getData(1, 5);
 	}, []);
@@ -165,6 +187,19 @@ export default function HomePage() {
 			</Box>
 			<Box p={4} backgroundColor={"skyblue"}>
 				<Stack spacing={4} as={Container} maxW={"7xl"} textAlign={"center"}>
+					<Select placeholder="Status" onChange={(e)=>handleStatus(e.target.value)}>
+						<option value="active">Active</option>
+						<option value="retired">Retired</option>
+					</Select>
+					<Select placeholder="Original Launch">
+						<option value="option1">Ascending</option>
+						<option value="option2">Descending</option>
+					</Select>
+					<Select placeholder="Type" onChange={(e)=>handleType(e.target.value)}>
+						<option value="Dragon 1.0">Dragon 1.0</option>
+						<option value="Dragon 1.1">Dragon 1.1</option>
+						<option value="Dragon 2.0">Dragon 2.0</option>
+					</Select>
 					<Heading fontSize={{ base: "2xl", sm: "4xl" }} fontWeight={"bold"}>
 						Capsules Data
 					</Heading>
