@@ -22,6 +22,8 @@ import DataModal from "../Components/DataModal";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CapusuleData from "../Components/CapusuleData";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../Redux/Action";
 
 const Card = ({ heading, description, icon, href }) => {
 	const handleModal = (description) => {
@@ -71,6 +73,10 @@ const Card = ({ heading, description, icon, href }) => {
 };
 
 export default function HomePage() {
+  const dispatch=useDispatch();
+  const {products}=useSelector(store=>store.ProductReducer);
+  console.log(products);
+
 	const [data, setData] = useState([]);
 	const [page, setPage] = useState([]);
 	const getData = (page, limit) => {
@@ -78,29 +84,28 @@ export default function HomePage() {
 			.get(`https://api.spacexdata.com/v3/capsules/?page={page}&limit=${limit}`)
 			.then((res) => {
 				setData(res.data);
-				createButton(data.length, 5);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	};
-	const createButton = (length, limit) => {
-		let count = Math.ceil(length / limit);
-		for (let i = 0; i < count; i++) {
-			setPage(...page, i + 1);
-		}
-		console.log(page);
-	};
-	const PaginatedData = (clicked_btn, limit) => {
-		axios
-			.get(`https://api.spacexdata.com/v3/capsules/?page={page}&limit=${limit}`)
-			.then((res) => {
-				setData(res.data);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
+	// const createButton = (length, limit) => {
+	// 	let count = Math.ceil(length / limit);
+	// 	for (let i = 0; i < count; i++) {
+	// 		setPage(...page, i + 1);
+	// 	}
+	// 	console.log(page);
+	// };
+	// const PaginatedData = (clicked_btn, limit) => {
+	// 	axios
+	// 		.get(`https://api.spacexdata.com/v3/capsules/?page={page}&limit=${limit}`)
+	// 		.then((res) => {
+	// 			setData(res.data);
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log(err);
+	// 		});
+	// };
   const handleStatus=(e)=>{
     axios
     .get(`https://api.spacexdata.com/v3/capsules/?status=${e}`)
@@ -125,7 +130,8 @@ export default function HomePage() {
     });
   }
 	useEffect(() => {
-		getData(1, 5);
+		 getData(1, 5);
+    dispatch(getProducts)
 	}, []);
 	return (
 		<>
